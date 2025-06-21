@@ -32,6 +32,9 @@ TEST(SmallerEqual, SmallerEqual)
 
         check(arg1 <= arg2);
         check(!!(arg1 <= arg2));
+        check(arg2 > arg1);
+        check(!!(arg2 > arg1));
+
         check(!(arg1 > arg2));
         check(!!!(arg1 > arg2));
     }
