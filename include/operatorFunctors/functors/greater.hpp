@@ -5,10 +5,10 @@
 namespace operatorFunctors
 {
 
-template <typename T>
+template <typename T, typename V>
 class SmallerEqual;
 
-template <typename T>
+template <typename T, typename V = T>
 class Greater : public Value<T>
 {
 public:
@@ -16,11 +16,11 @@ public:
 
     constexpr bool operator()(T value) const { return value > this->m_value; }
 
-    constexpr SmallerEqual<T> operator!() const { return {this->m_value}; }
+    constexpr SmallerEqual<T, T> operator!() const { return {this->m_value}; }
 };
 
-template <>
-class Greater<void>
+template <typename T>
+class Greater<T, void>
 {
 public:
     template <typename V>
@@ -29,7 +29,7 @@ public:
         return v1 > v2;
     }
 
-    // constexpr SmallerEqual<T> operator!() const { return {}; }
+    constexpr SmallerEqual<T, T> operator!() const { return {}; }
 };
 
 } // namespace operatorFunctors

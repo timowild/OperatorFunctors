@@ -4,10 +4,10 @@
 
 namespace operatorFunctors
 {
-template <typename T>
+template <typename T, typename V>
 class Equal;
 
-template <typename T>
+template <typename T, typename V = T>
 class NotEqual : public Value<T>
 {
 public:
@@ -15,11 +15,11 @@ public:
 
     constexpr bool operator()(T value) const { return value != this->m_value; }
 
-    constexpr Equal<T> operator!() const { return {this->m_value}; }
+    constexpr Equal<T, T> operator!() const { return {this->m_value}; }
 };
 
-template <>
-class NotEqual<void>
+template <typename T>
+class NotEqual<T, void>
 {
 public:
     template <typename V>
@@ -28,7 +28,7 @@ public:
         return v1 != v2;
     }
 
-    // constexpr Equal<void> operator!() const { return {}; }
+    constexpr Equal<T, T> operator!() const { return {}; }
 };
 
 } // namespace operatorFunctors
