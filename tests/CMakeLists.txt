@@ -16,6 +16,7 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(operatorFunctors_test operatorFunctors_test.cpp)
 enable_warnings(operatorFunctors_test)
+add_subdirectory(sources)
 target_link_libraries(operatorFunctors_test PRIVATE gtest_main)
 target_compile_features(operatorFunctors_test PRIVATE cxx_std_20)
 

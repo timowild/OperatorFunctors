@@ -1,7 +1,7 @@
 #pragma once
 
+#include <operatorFunctors/functors/baseOperator.hpp>
 #include <operatorFunctors/helpers/isArg.hpp>
-#include <operatorFunctors/helpers/value.hpp>
 
 #include <operatorFunctors/functors/equal.hpp>
 #include <operatorFunctors/functors/greater.hpp>
@@ -24,6 +24,9 @@ namespace operatorFunctors
 template <uint32_t Pos = 1>
 class Arg
 {
+private:
+    static_assert(Pos >= 1 && Pos <= 2);
+
 public:
     constexpr Arg() = default;
 
@@ -44,7 +47,7 @@ public:
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
-            return False<T>{};
+            return False<void>{};
         }
     }
 
@@ -65,7 +68,7 @@ public:
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
-            return True<T>{};
+            return True<void>{};
         }
     }
 
@@ -86,7 +89,7 @@ public:
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
-            return False<T>{};
+            return False<void>{};
         }
     }
 
@@ -107,7 +110,7 @@ public:
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
-            return True<T>{};
+            return True<void>{};
         }
     }
 
@@ -118,13 +121,13 @@ public:
         {
             return Equal<T>{value};
         }
-        else if constexpr(Pos != IsArg<T>::pos)
+        else if constexpr (Pos != IsArg<T>::pos)
         {
             return Equal<void>{};
         }
         else
         {
-            return True<T>{};
+            return True<void>{};
         }
     }
 
@@ -135,13 +138,39 @@ public:
         {
             return NotEqual<T>{value};
         }
-        else if constexpr(Pos != IsArg<T>::pos)
+        else if constexpr (Pos != IsArg<T>::pos)
         {
             return NotEqual<void>{};
         }
         else
         {
-            return False<T>{};
+            return False<void>{};
+        }
+    }
+
+    template <typename T>
+    constexpr auto operator&&(const T& value) const
+    {
+        if constexpr (!IsArg<T>::value)
+        {
+            return And<T>{value};
+        }
+        else
+        {
+            return And<void>{};
+        }
+    }
+
+    template <typename T>
+    constexpr auto operator||(const T& value) const
+    {
+        if constexpr (!IsArg<T>::value)
+        {
+            return Or<T>{value};
+        }
+        else
+        {
+            return Or<void>{};
         }
     }
 };

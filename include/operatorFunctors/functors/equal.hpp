@@ -1,37 +1,35 @@
 #pragma once
 
-#include <operatorFunctors/helpers/value.hpp>
-
-#include <operatorFunctors/functors/notEqual.hpp>
+#include <operatorFunctors/functors/baseOperator.hpp>
 
 namespace operatorFunctors
 {
 
-template <typename T, typename V>
+template <typename T>
 class NotEqual;
 
-template <typename T, typename V = T>
-class Equal : public Value<T>
-{
-public:
-    using Value<T>::Value;
-
-    constexpr bool operator()(T value) const { return value == this->m_value; }
-
-    constexpr NotEqual<T> operator!() const { return {this->m_value}; }
-};
-
 template <typename T>
-class Equal<T, void>
+class Equal : public BaseOperator<T, NotEqual<T>>
 {
+private:
+    using Base = BaseOperator<T, NotEqual<T>>;
+
 public:
+    using Base::Base;
+
+    template <typename V = T>
+        requires(!std::is_void_v<T> && std::is_same_v<T, V>)
+    constexpr bool operator()(const V& value) const
+    {
+        return value == this->m_value;
+    }
+
     template <typename V>
-    constexpr bool operator()(V v1, V v2) const
+        requires(std::is_void_v<T>)
+    constexpr bool operator()(const V& v1, const V& v2) const
     {
         return v1 == v2;
     }
-
-    constexpr NotEqual<void> operator!() const { return {}; }
 };
 
 } // namespace operatorFunctors

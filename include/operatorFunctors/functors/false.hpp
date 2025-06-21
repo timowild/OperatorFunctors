@@ -1,7 +1,5 @@
 #pragma once
 
-#include <type_traits>
-
 namespace operatorFunctors
 {
 
@@ -9,17 +7,19 @@ template <typename T>
 class True;
 
 template <typename T>
-class False
+class False : public BaseOperator<T, True<T>>
 {
+private:
+    using Base = BaseOperator<T, True<T>>;
+
 public:
-    template <typename... R>
-    requires(std::conjunction_v<std::is_same<T, R>...>)
-    consteval bool operator()(const R&&...) const
+    using Base::Base;
+
+    template <typename... V>
+    consteval bool operator()(const V&...) const
     {
         return false;
     }
-
-    consteval True<T> operator!() const { return {}; }
 };
 
 } // namespace operatorFunctors
