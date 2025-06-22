@@ -22,7 +22,8 @@ int main()
     std::vector<int> v{2, 1, 8, 5, 4, 3};
 
     // Traditionally
-    const auto itTrad = std::find_if(v.begin(), v.end(), [](const auto& arg) { return arg == 4 || arg == 5; });
+    const auto itTrad = std::find_if(v.begin(), v.end(),
+                                    [](const auto& arg) { return arg == 4 || arg == 5; });
 
     // With OperatorFunctors
     const auto itOpFunc = std::find_if(v.begin(), v.end(), arg == 4 || arg == 5);
