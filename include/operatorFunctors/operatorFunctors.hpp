@@ -43,7 +43,7 @@ public:
         }
         else if constexpr (Pos > IsArg<T>::pos)
         {
-            return GreaterEqual<void>{};
+            return Greater<void>{};
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
@@ -64,7 +64,7 @@ public:
         }
         else if constexpr (Pos > IsArg<T>::pos)
         {
-            return Greater<void>{};
+            return GreaterEqual<void>{};
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
@@ -85,7 +85,7 @@ public:
         }
         else if constexpr (Pos > IsArg<T>::pos)
         {
-            return SmallerEqual<void>{};
+            return Smaller<void>{};
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
@@ -106,7 +106,7 @@ public:
         }
         else if constexpr (Pos > IsArg<T>::pos)
         {
-            return Smaller<void>{};
+            return SmallerEqual<void>{};
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
