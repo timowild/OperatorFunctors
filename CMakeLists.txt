@@ -17,6 +17,7 @@ set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 include(cmake/variables.cmake)
+include(cmake/clangformat.cmake)
 
 # ---- Developer mode ----
 
