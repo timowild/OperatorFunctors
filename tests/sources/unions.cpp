@@ -1,8 +1,6 @@
 #include <gtest/gtest.h>
 
 #include <operatorFunctors/operatorFunctors.hpp>
-#include <operatorFunctors/unions/andUnion.hpp>
-#include <operatorFunctors/unions/orUnion.hpp>
 
 TEST(AndUnion, AndUnion)
 {

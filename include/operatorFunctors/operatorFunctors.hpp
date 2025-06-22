@@ -16,6 +16,9 @@
 #include <operatorFunctors/functors/false.hpp>
 #include <operatorFunctors/functors/true.hpp>
 
+#include <operatorFunctors/unions/andUnion.hpp>
+#include <operatorFunctors/unions/orUnion.hpp>
+
 #include <cstdint>
 
 namespace operatorFunctors
