@@ -20,5 +20,12 @@ TEST(True, True)
 
         check(arg1 >= arg1);
         check(arg1 <= arg1);
+        check(arg2 >= arg2);
+        check(arg2 <= arg2);
+
+        check(arg1 != arg1 || arg1 == arg1);
+        check(arg1 == arg1 || arg1 != arg1);
+        check(arg2 != arg2 || arg2 == arg2);
+        check(arg2 == arg2 || arg2 != arg2);
     }
 }

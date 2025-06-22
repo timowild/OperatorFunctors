@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include <operatorFunctors/helpers/isFalse.hpp>
+#include <operatorFunctors/helpers/isTrue.hpp>
+
 #include <cstdint>
 
 namespace operatorFunctors
@@ -32,7 +35,7 @@ public:
     }
 
     template <typename O, uint32_t Pos>
-    constexpr auto operator&&(const True<O, Pos>& other) const
+    constexpr auto operator&&(const True<O, Pos>&) const
     {
         return *static_cast<const Derived*>(this);
     }
@@ -40,7 +43,14 @@ public:
     template <typename OtherFunctorOrUnion>
     constexpr auto operator&&(const OtherFunctorOrUnion& other) const
     {
-        return AndUnion<Derived, OtherFunctorOrUnion>{*static_cast<const Derived*>(this), other};
+        if constexpr (IsFalse_v<Derived>)
+        {
+            *static_cast<const Derived*>(this);
+        }
+        else
+        {
+            return AndUnion<Derived, OtherFunctorOrUnion>{*static_cast<const Derived*>(this), other};
+        }
     }
 
     template <typename O, uint32_t Pos>
@@ -50,7 +60,7 @@ public:
     }
 
     template <typename O, uint32_t Pos>
-    constexpr auto operator||(const False<O, Pos>& other) const
+    constexpr auto operator||(const False<O, Pos>&) const
     {
         return *static_cast<const Derived*>(this);
     }
@@ -58,7 +68,14 @@ public:
     template <typename OtherFunctorOrUnion>
     constexpr auto operator||(const OtherFunctorOrUnion& other) const
     {
-        return OrUnion<Derived, OtherFunctorOrUnion>{*static_cast<const Derived*>(this), other};
+        if constexpr (IsTrue_v<Derived>)
+        {
+            *static_cast<const Derived*>(this);
+        }
+        else
+        {
+            return OrUnion<Derived, OtherFunctorOrUnion>{*static_cast<const Derived*>(this), other};
+        }
     }
 };
 

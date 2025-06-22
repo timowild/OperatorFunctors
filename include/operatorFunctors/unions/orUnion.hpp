@@ -2,8 +2,6 @@
 
 #include <operatorFunctors/unions/baseUnion.hpp>
 
-#include <cstdint>
-
 namespace operatorFunctors
 {
 

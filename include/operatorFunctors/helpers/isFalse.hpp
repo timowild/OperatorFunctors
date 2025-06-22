@@ -1,0 +1,25 @@
+#pragma once
+
+#include <cstdint>
+#include <type_traits>
+
+namespace operatorFunctors
+{
+
+template <typename, uint32_t>
+class False;
+
+template <typename T>
+struct IsFalse : std::false_type
+{
+};
+
+template <typename T, uint32_t Pos>
+struct IsFalse<False<T, Pos>> : std::true_type
+{
+};
+
+template <typename T>
+inline constexpr bool IsFalse_v = IsFalse<T>::value;
+
+} // namespace operatorFunctors
