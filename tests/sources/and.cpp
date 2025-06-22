@@ -25,6 +25,24 @@ TEST(And, And)
         const auto check = [](auto andFunc)
         {
             EXPECT_FALSE(andFunc(false, false));
+            EXPECT_TRUE(andFunc(true, true));
+        };
+
+        check(arg && VALUE);
+        check(!!(arg && VALUE));
+        check(!(arg || VALUE));
+        check(!!!(arg || VALUE));
+
+        check(arg2 && VALUE);
+        check(!!(arg2 && VALUE));
+        check(!(arg2 || VALUE));
+        check(!!!(arg2 || VALUE));
+    }
+
+    {
+        const auto check = [](auto andFunc)
+        {
+            EXPECT_FALSE(andFunc(false, false));
             EXPECT_FALSE(andFunc(false, true));
             EXPECT_FALSE(andFunc(true, false));
             EXPECT_TRUE(andFunc(true, true));

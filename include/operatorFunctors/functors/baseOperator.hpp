@@ -1,6 +1,7 @@
 #pragma once
 
 #include <operatorFunctors/helpers/andOrOperator.hpp>
+#include <operatorFunctors/helpers/get.hpp>
 
 #include <type_traits>
 
@@ -22,12 +23,15 @@ class ValueStorage<void>
 {
 };
 
-template <typename T, typename Derived, typename OperatorNotT>
-class BaseOperator : public ValueStorage<T>, public AndOrOperator<Derived>
+template <template <typename, uint32_t> class Derived, typename T, uint32_t Position,
+          template <typename, uint32_t> class OperatorNot>
+class BaseOperator : public ValueStorage<T>, public AndOrOperator<Derived<T, Position>>
 {
 private:
+    using OperatorNotT = OperatorNot<T, Position>;
+    using DerivedT = Derived<T, Position>;
     using BaseValueStorage = ValueStorage<T>;
-    using BaseAndOrOperator = AndOrOperator<Derived>;
+    using BaseAndOrOperator = AndOrOperator<DerivedT>;
 
 protected:
     // Only subclasses can create BaseOperator objects
@@ -53,6 +57,29 @@ public:
         else
         {
             return {this->m_value};
+        }
+    }
+
+    template <typename V>
+        requires(!std::is_void_v<T>)
+    constexpr bool operator()(const V& v1, const V& v2) const
+    {
+        return exec(v1, v2);
+    }
+
+protected:
+    template <typename... V>
+    constexpr bool exec(const V&... values) const
+    {
+        const DerivedT& derived = *static_cast<const DerivedT*>(this);
+
+        if constexpr (!std::is_void_v<T>)
+        {
+            return derived.template operator()<Position>(get<Position - 1>(values...));
+        }
+        else
+        {
+            return derived(values...);
         }
     }
 };

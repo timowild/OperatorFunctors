@@ -34,13 +34,13 @@ public:
     template <typename O, uint32_t Pos>
     constexpr auto operator&&(const True<O, Pos>& other) const
     {
-        return *static_cast<Derived*>(this);
+        return *static_cast<const Derived*>(this);
     }
 
-    template <template <typename, uint32_t> class OtherFunctor, typename O, uint32_t Pos>
-    constexpr auto operator&&(const OtherFunctor<O, Pos>& other) const
+    template <typename OtherFunctorOrUnion>
+    constexpr auto operator&&(const OtherFunctorOrUnion& other) const
     {
-        return AndUnion<Derived, OtherFunctor<O, Pos>>{*static_cast<const Derived*>(this), other};
+        return AndUnion<Derived, OtherFunctorOrUnion>{*static_cast<const Derived*>(this), other};
     }
 
     template <typename O, uint32_t Pos>
@@ -52,13 +52,13 @@ public:
     template <typename O, uint32_t Pos>
     constexpr auto operator||(const False<O, Pos>& other) const
     {
-        return *static_cast<Derived*>(this);
+        return *static_cast<const Derived*>(this);
     }
 
-    template <template <typename, uint32_t> class OtherFunctor, typename O, uint32_t Pos>
-    constexpr auto operator||(const OtherFunctor<O, Pos>& other) const
+    template <typename OtherFunctorOrUnion>
+    constexpr auto operator||(const OtherFunctorOrUnion& other) const
     {
-        return OrUnion<Derived, OtherFunctor<O, Pos>>{*static_cast<const Derived*>(this), other};
+        return OrUnion<Derived, OtherFunctorOrUnion>{*static_cast<const Derived*>(this), other};
     }
 };
 

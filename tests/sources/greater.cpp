@@ -25,6 +25,25 @@ TEST(Greater, Greater)
     {
         const auto check = [](auto greaterFunc)
         {
+            EXPECT_TRUE(greaterFunc(VALUE + 1, VALUE + 2));
+            EXPECT_FALSE(greaterFunc(VALUE, VALUE - 1));
+            EXPECT_FALSE(greaterFunc(VALUE - 1, VALUE + 1));
+        };
+
+        check(arg > VALUE);
+        check(!!(arg > VALUE));
+        check(!(arg <= VALUE));
+        check(!!!(arg <= VALUE));
+
+        check(arg2 > VALUE + 1);
+        check(!!(arg2 > VALUE + 1));
+        check(!(arg2 <= VALUE + 1));
+        check(!!!(arg2 <= VALUE + 1));
+    }
+
+    {
+        const auto check = [](auto greaterFunc)
+        {
             EXPECT_TRUE(greaterFunc(VALUE + 1, VALUE));
             EXPECT_FALSE(greaterFunc(VALUE, VALUE));
             EXPECT_FALSE(greaterFunc(VALUE - 1, VALUE));

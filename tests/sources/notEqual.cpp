@@ -25,6 +25,25 @@ TEST(NotEqual, NotEqual)
     {
         const auto check = [](auto notEqualFunc)
         {
+            EXPECT_FALSE(notEqualFunc(VALUE, VALUE - 1));
+            EXPECT_TRUE(notEqualFunc(VALUE - 1, VALUE));
+            EXPECT_TRUE(notEqualFunc(VALUE - 2, VALUE + 1));
+        };
+
+        check(arg != VALUE);
+        check(!!(arg != VALUE));
+        check(!(arg == VALUE));
+        check(!!!(arg == VALUE));
+
+        check(arg2 != VALUE - 1);
+        check(!!(arg2 != VALUE - 1));
+        check(!(arg2 == VALUE - 1));
+        check(!!!(arg2 == VALUE - 1));
+    }
+
+    {
+        const auto check = [](auto notEqualFunc)
+        {
             EXPECT_FALSE(notEqualFunc(VALUE, VALUE));
             EXPECT_TRUE(notEqualFunc(VALUE - 1, VALUE));
             EXPECT_TRUE(notEqualFunc(VALUE - 2, VALUE));
@@ -34,7 +53,7 @@ TEST(NotEqual, NotEqual)
         check(!!(arg1 != arg2));
         check(arg2 != arg1);
         check(!!(arg2 != arg1));
-        
+
         check(!(arg1 == arg2));
         check(!!!(arg1 == arg2));
     }

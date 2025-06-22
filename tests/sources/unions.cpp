@@ -42,7 +42,8 @@ TEST(AndUnion, AndUnion)
             EXPECT_FALSE(andUnionFunc(VALUE - 1, VALUE + 1));
         };
 
-        check((arg1 > arg2) && (arg1 > VALUE));
+        check((arg1 > arg2) && (arg1 > VALUE) && (arg2 <= VALUE));
+        check((arg1 > arg2) && ((arg1 > VALUE) && (arg2 <= VALUE)));
     }
 }
 
@@ -91,6 +92,7 @@ TEST(OrUnion, OrUnion)
             EXPECT_FALSE(orUnionFunc(VALUE, VALUE + 1));
         };
 
-        check((arg1 > arg2) || (arg1 > VALUE));
+        check((arg1 > arg2) || (arg1 > VALUE) || (arg2 <= VALUE - 1));
+        check((arg1 > arg2) || ((arg1 > VALUE) || (arg2 <= VALUE - 1)));
     }
 }

@@ -9,12 +9,10 @@ template <typename T, uint32_t Position>
 class Or;
 
 template <typename T, uint32_t Position>
-class And : public BaseOperator<T, And<T, Position>, Or<T, Position>>
+class And : public BaseOperator<And, T, Position, Or>
 {
 private:
-    using Self = And<T, Position>;
-    using OperatorNotT = Or<T, Position>;
-    using Base = BaseOperator<T, Self, OperatorNotT>;
+    using Base = BaseOperator<And, T, Position, Or>;
 
 public:
     template <typename V = T>
@@ -29,12 +27,14 @@ public:
     {
     }
 
-    template <typename V = T>
-        requires(!std::is_void_v<T> && std::is_same_v<T, V>)
+    template <uint32_t Pos = 1, typename V = T>
+        requires(!std::is_void_v<T> && std::is_same_v<T, V> && Pos == Position)
     constexpr bool operator()(const V& value) const
     {
         return value && this->m_value;
     }
+
+    using Base::operator();
 
     template <typename V>
         requires(std::is_void_v<T>)

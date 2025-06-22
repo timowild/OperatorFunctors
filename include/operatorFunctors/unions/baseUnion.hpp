@@ -1,6 +1,7 @@
 #pragma once
 
 #include <operatorFunctors/helpers/andOrOperator.hpp>
+#include <operatorFunctors/helpers/get.hpp>
 
 #include <cstdint>
 #include <utility>
@@ -8,29 +9,16 @@
 namespace operatorFunctors
 {
 
-template <typename Functor1, typename Functor2, typename Derived>
+template <typename FunctorOrUnion1, typename FunctorOrUnion2, typename Derived>
 class BaseUnion : public AndOrOperator<Derived>
 {
 private:
     using Base = AndOrOperator<Derived>;
 
 protected:
-    constexpr BaseUnion(const Functor1& functor1, const Functor2& functor2) : Base{}, m_functorPair{functor1, functor2}
+    constexpr BaseUnion(const FunctorOrUnion1& functorOrUnion1, const FunctorOrUnion2& functorOrUnion2)
+        : Base{}, m_functorOrUnionPair{functorOrUnion1, functorOrUnion2}
     {
-    }
-
-    template <uint32_t P, typename V1, typename... VRest>
-        requires(P <= sizeof...(VRest))
-    constexpr auto get(const V1& v1, const VRest&... vRest) const
-    {
-        if constexpr (P == 0)
-        {
-            return v1;
-        }
-        else
-        {
-            return get<P - 1>(vRest...);
-        }
     }
 
     template <typename Functor, typename... V>
@@ -44,7 +32,7 @@ protected:
     {
         if constexpr (!std::is_void_v<T>)
         {
-            return functor(get<Pos - 1>(values...));
+            return functor.template operator()<Pos>(get<Pos - 1>(values...));
         }
         else
         {
@@ -52,7 +40,7 @@ protected:
         }
     }
 
-    std::pair<Functor1, Functor2> m_functorPair;
+    std::pair<FunctorOrUnion1, FunctorOrUnion2> m_functorOrUnionPair;
 };
 
 } // namespace operatorFunctors

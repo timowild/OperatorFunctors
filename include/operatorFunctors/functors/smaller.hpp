@@ -9,12 +9,10 @@ template <typename T, uint32_t Position>
 class GreaterEqual;
 
 template <typename T, uint32_t Position>
-class Smaller : public BaseOperator<T, Smaller<T, Position>, GreaterEqual<T, Position>>
+class Smaller : public BaseOperator<Smaller, T, Position, GreaterEqual>
 {
 private:
-    using Self = Smaller<T, Position>;
-    using OperatorNotT = GreaterEqual<T, Position>;
-    using Base = BaseOperator<T, Self, OperatorNotT>;
+    using Base = BaseOperator<Smaller, T, Position, GreaterEqual>;
 
 public:
     template <typename V = T>
@@ -29,12 +27,14 @@ public:
     {
     }
 
-    template <typename V = T>
-        requires(!std::is_void_v<T> && std::is_same_v<T, V>)
+    template <uint32_t Pos = 1, typename V = T>
+        requires(!std::is_void_v<T> && std::is_same_v<T, V> && Pos == Position)
     constexpr bool operator()(const V& value) const
     {
         return value < this->m_value;
     }
+
+    using Base::operator();
 
     template <typename V>
         requires(std::is_void_v<T>)

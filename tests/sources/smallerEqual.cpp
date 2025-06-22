@@ -25,6 +25,25 @@ TEST(SmallerEqual, SmallerEqual)
     {
         const auto check = [](auto smallerEqualFunc)
         {
+            EXPECT_TRUE(smallerEqualFunc(VALUE, VALUE + 1));
+            EXPECT_FALSE(smallerEqualFunc(VALUE + 1, VALUE + 2));
+            EXPECT_FALSE(smallerEqualFunc(VALUE + 2, VALUE + 3));
+        };
+
+        check(arg <= VALUE);
+        check(!!(arg <= VALUE));
+        check(!(arg > VALUE));
+        check(!!!(arg > VALUE));
+
+        check(arg2 <= VALUE + 1);
+        check(!!(arg2 <= VALUE + 1));
+        check(!(arg2 > VALUE + 1));
+        check(!!!(arg2 > VALUE + 1));
+    }
+
+    {
+        const auto check = [](auto smallerEqualFunc)
+        {
             EXPECT_TRUE(smallerEqualFunc(VALUE, VALUE));
             EXPECT_FALSE(smallerEqualFunc(VALUE + 1, VALUE));
             EXPECT_FALSE(smallerEqualFunc(VALUE + 2, VALUE));

@@ -7,12 +7,10 @@ template <typename T, uint32_t Position>
 class True;
 
 template <typename T, uint32_t Position>
-class False : public BaseOperator<T, False<T, Position>, True<T, Position>>
+class False : public BaseOperator<False, T, Position, True>
 {
 private:
-    using Self = False<T, Position>;
-    using OperatorNotT = True<T, Position>;
-    using Base = BaseOperator<T, Self, OperatorNotT>;
+    using Base = BaseOperator<False, T, Position, True>;
 
 public:
     template <typename V = T>
@@ -27,7 +25,7 @@ public:
     {
     }
 
-    template <typename... V>
+    template <uint32_t Pos = 0, typename... V>
     consteval bool operator()(const V&...) const
     {
         return false;

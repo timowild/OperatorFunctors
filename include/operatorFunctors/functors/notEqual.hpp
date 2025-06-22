@@ -8,12 +8,10 @@ template <typename T, uint32_t Position>
 class Equal;
 
 template <typename T, uint32_t Position>
-class NotEqual : public BaseOperator<T, NotEqual<T, Position>, Equal<T, Position>>
+class NotEqual : public BaseOperator<NotEqual, T, Position, Equal>
 {
 private:
-    using Self = NotEqual<T, Position>;
-    using OperatorNotT = Equal<T, Position>;
-    using Base = BaseOperator<T, Self, OperatorNotT>;
+    using Base = BaseOperator<NotEqual, T, Position, Equal>;
 
 public:
     template <typename V = T>
@@ -28,12 +26,14 @@ public:
     {
     }
 
-    template <typename V = T>
-        requires(!std::is_void_v<T> && std::is_same_v<T, V>)
+    template <uint32_t Pos = 1, typename V = T>
+        requires(!std::is_void_v<T> && std::is_same_v<T, V> && Pos == Position)
     constexpr bool operator()(const V& value) const
     {
         return value != this->m_value;
     }
+
+    using Base::operator();
 
     template <typename V>
         requires(std::is_void_v<T>)

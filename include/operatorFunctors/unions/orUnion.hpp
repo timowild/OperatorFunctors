@@ -7,20 +7,24 @@
 namespace operatorFunctors
 {
 
-template <typename Functor1, typename Functor2>
-class OrUnion : public BaseUnion<Functor1, Functor2, OrUnion<Functor1, Functor2>>
+template <typename FunctorOrUnion1, typename FunctorOrUnion2>
+class OrUnion : public BaseUnion<FunctorOrUnion1, FunctorOrUnion2, OrUnion<FunctorOrUnion1, FunctorOrUnion2>>
 {
 private:
-    using Self = OrUnion<Functor1, Functor2>;
-    using Base = BaseUnion<Functor1, Functor2, Self>;
+    using Self = OrUnion<FunctorOrUnion1, FunctorOrUnion2>;
+    using Base = BaseUnion<FunctorOrUnion1, FunctorOrUnion2, Self>;
 
 public:
-    constexpr OrUnion(const Functor1& functor1, const Functor2& functor2) : Base{functor1, functor2} {}
+    constexpr OrUnion(const FunctorOrUnion1& functorOrUnion1, const FunctorOrUnion2& functorOrUnion2)
+        : Base{functorOrUnion1, functorOrUnion2}
+    {
+    }
 
     template <typename... V>
     constexpr bool operator()(const V&... values) const
     {
-        return this->exec(this->m_functorPair.first, values...) || this->exec(this->m_functorPair.second, values...);
+        return this->exec(this->m_functorOrUnionPair.first, values...) ||
+               this->exec(this->m_functorOrUnionPair.second, values...);
     }
 };
 

@@ -25,6 +25,25 @@ TEST(Equal, Equal)
     {
         const auto check = [](auto equalFunc)
         {
+            EXPECT_TRUE(equalFunc(VALUE, VALUE + 1));
+            EXPECT_FALSE(equalFunc(VALUE - 1, VALUE));
+            EXPECT_FALSE(equalFunc(VALUE - 2, VALUE - 2));
+        };
+
+        check(arg == VALUE);
+        check(!!(arg == VALUE));
+        check(!(arg != VALUE));
+        check(!!!(arg != VALUE));
+
+        check(arg2 == VALUE + 1);
+        check(!!(arg2 == VALUE + 1));
+        check(!(arg2 != VALUE + 1));
+        check(!!!(arg2 != VALUE + 1));
+    }
+
+    {
+        const auto check = [](auto equalFunc)
+        {
             EXPECT_TRUE(equalFunc(VALUE, VALUE));
             EXPECT_FALSE(equalFunc(VALUE - 1, VALUE));
             EXPECT_FALSE(equalFunc(VALUE - 2, VALUE));
@@ -34,7 +53,7 @@ TEST(Equal, Equal)
         check(!!(arg1 == arg2));
         check(arg2 == arg1);
         check(!!(arg2 == arg1));
-        
+
         check(!(arg1 != arg2));
         check(!!!(arg1 != arg2));
     }
