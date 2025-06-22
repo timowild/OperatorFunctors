@@ -23,7 +23,7 @@ int main()
 
     // Traditionally
     const auto itTrad = std::find_if(v.begin(), v.end(),
-                                    [](const auto& arg) { return arg == 4 || arg == 5; });
+                                     [](const auto& arg) { return arg == 4 || arg == 5; });
 
     // With OperatorFunctors
     const auto itOpFunc = std::find_if(v.begin(), v.end(), arg == 4 || arg == 5);
