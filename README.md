@@ -2,7 +2,7 @@
 
 Lambda functions are often used as comparators for STL algorithms. In most cases, however, these lambda functions are trivial, which can disrupt the reading flow.
 
-OperatorFunctors is a header-only C++20 library that reduces the boilerplate code of simple lambdas so that only the body of a lambda needs to be specified.
+OperatorFunctors is a header-only C++20 library that reduces the boilerplate code of simple (captureless) lambdas so that only the body of a lambda needs to be specified.
 
 ## Example
 
@@ -22,7 +22,8 @@ int main()
     std::vector<int> v{2, 1, 8, 5, 4, 3};
 
     // Traditionally
-    const auto itTrad = std::find_if(v.begin(), v.end(), [](const auto& arg) { return arg == 4 || arg == 5; });
+    const auto itTrad = std::find_if(v.begin(), v.end(),
+                                     [](const auto& arg) { return arg == 4 || arg == 5; });
 
     // With OperatorFunctors
     const auto itOpFunc = std::find_if(v.begin(), v.end(), arg == 4 || arg == 5);
