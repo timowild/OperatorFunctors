@@ -5,17 +5,29 @@
 namespace operatorFunctors
 {
 
-template <typename T>
+template <typename T, uint32_t Position>
 class GreaterEqual;
 
-template <typename T>
-class Smaller : public BaseOperator<T, GreaterEqual<T>>
+template <typename T, uint32_t Position>
+class Smaller : public BaseOperator<T, Smaller<T, Position>, GreaterEqual<T, Position>>
 {
 private:
-    using Base = BaseOperator<T, GreaterEqual<T>>;
+    using Self = Smaller<T, Position>;
+    using OperatorNotT = GreaterEqual<T, Position>;
+    using Base = BaseOperator<T, Self, OperatorNotT>;
 
 public:
-    using Base::Base;
+    template <typename V = T>
+        requires(!std::is_void_v<T> && std::is_same_v<T, V>)
+    constexpr Smaller(const V& value) : Base{value}
+    {
+    }
+
+    constexpr Smaller()
+        requires(std::is_void_v<T>)
+        : Base{}
+    {
+    }
 
     template <typename V = T>
         requires(!std::is_void_v<T> && std::is_same_v<T, V>)

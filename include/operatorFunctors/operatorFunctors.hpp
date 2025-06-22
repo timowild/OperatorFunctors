@@ -35,19 +35,19 @@ public:
     {
         if constexpr (!IsArg<T>::value)
         {
-            return Smaller<T>{value};
+            return Smaller<T, Pos>{value};
         }
         else if constexpr (Pos < IsArg<T>::pos)
         {
-            return Smaller<void>{};
+            return Smaller<void, Pos>{};
         }
         else if constexpr (Pos > IsArg<T>::pos)
         {
-            return GreaterEqual<void>{};
+            return Greater<void, Pos>{};
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
-            return False<void>{};
+            return False<void, Pos>{};
         }
     }
 
@@ -56,19 +56,19 @@ public:
     {
         if constexpr (!IsArg<T>::value)
         {
-            return SmallerEqual<T>{value};
+            return SmallerEqual<T, Pos>{value};
         }
         else if constexpr (Pos < IsArg<T>::pos)
         {
-            return SmallerEqual<void>{};
+            return SmallerEqual<void, Pos>{};
         }
         else if constexpr (Pos > IsArg<T>::pos)
         {
-            return Greater<void>{};
+            return GreaterEqual<void, Pos>{};
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
-            return True<void>{};
+            return True<void, Pos>{};
         }
     }
 
@@ -77,19 +77,19 @@ public:
     {
         if constexpr (!IsArg<T>::value)
         {
-            return Greater<T>{value};
+            return Greater<T, Pos>{value};
         }
         else if constexpr (Pos < IsArg<T>::pos)
         {
-            return Greater<void>{};
+            return Greater<void, Pos>{};
         }
         else if constexpr (Pos > IsArg<T>::pos)
         {
-            return SmallerEqual<void>{};
+            return Smaller<void, Pos>{};
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
-            return False<void>{};
+            return False<void, Pos>{};
         }
     }
 
@@ -98,19 +98,19 @@ public:
     {
         if constexpr (!IsArg<T>::value)
         {
-            return GreaterEqual<T>{value};
+            return GreaterEqual<T, Pos>{value};
         }
         else if constexpr (Pos < IsArg<T>::pos)
         {
-            return GreaterEqual<void>{};
+            return GreaterEqual<void, Pos>{};
         }
         else if constexpr (Pos > IsArg<T>::pos)
         {
-            return Smaller<void>{};
+            return SmallerEqual<void, Pos>{};
         }
         else if constexpr (Pos == IsArg<T>::pos)
         {
-            return True<void>{};
+            return True<void, Pos>{};
         }
     }
 
@@ -119,15 +119,15 @@ public:
     {
         if constexpr (!IsArg<T>::value)
         {
-            return Equal<T>{value};
+            return Equal<T, Pos>{value};
         }
         else if constexpr (Pos != IsArg<T>::pos)
         {
-            return Equal<void>{};
+            return Equal<void, Pos>{};
         }
         else
         {
-            return True<void>{};
+            return True<void, Pos>{};
         }
     }
 
@@ -136,15 +136,15 @@ public:
     {
         if constexpr (!IsArg<T>::value)
         {
-            return NotEqual<T>{value};
+            return NotEqual<T, Pos>{value};
         }
         else if constexpr (Pos != IsArg<T>::pos)
         {
-            return NotEqual<void>{};
+            return NotEqual<void, Pos>{};
         }
         else
         {
-            return False<void>{};
+            return False<void, Pos>{};
         }
     }
 
@@ -153,11 +153,11 @@ public:
     {
         if constexpr (!IsArg<T>::value)
         {
-            return And<T>{value};
+            return And<T, Pos>{value};
         }
         else
         {
-            return And<void>{};
+            return And<void, Pos>{};
         }
     }
 
@@ -166,11 +166,11 @@ public:
     {
         if constexpr (!IsArg<T>::value)
         {
-            return Or<T>{value};
+            return Or<T, Pos>{value};
         }
         else
         {
-            return Or<void>{};
+            return Or<void, Pos>{};
         }
     }
 };
