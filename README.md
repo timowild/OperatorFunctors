@@ -2,7 +2,7 @@
 
 Lambda functions are often used as comparators for STL algorithms. In most cases, however, these lambda functions are trivial, which can disrupt the reading flow.
 
-OperatorFunctors is a header-only C++20 library that reduces the boilerplate code of simple lambdas so that only the body of a lambda needs to be specified.
+OperatorFunctors is a header-only C++20 library that reduces the boilerplate code of simple (captureless) lambdas so that only the body of a lambda needs to be specified.
 
 ## Example
 
