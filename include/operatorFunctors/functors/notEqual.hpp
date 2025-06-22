@@ -4,17 +4,29 @@
 
 namespace operatorFunctors
 {
-template <typename T>
+template <typename T, uint32_t Position>
 class Equal;
 
-template <typename T>
-class NotEqual : public BaseOperator<T, Equal<T>>
+template <typename T, uint32_t Position>
+class NotEqual : public BaseOperator<T, NotEqual<T, Position>, Equal<T, Position>>
 {
 private:
-    using Base = BaseOperator<T, Equal<T>>;
+    using Self = NotEqual<T, Position>;
+    using OperatorNotT = Equal<T, Position>;
+    using Base = BaseOperator<T, Self, OperatorNotT>;
 
 public:
-    using Base::Base;
+    template <typename V = T>
+        requires(!std::is_void_v<T> && std::is_same_v<T, V>)
+    constexpr NotEqual(const V& value) : Base{value}
+    {
+    }
+
+    constexpr NotEqual()
+        requires(std::is_void_v<T>)
+        : Base{}
+    {
+    }
 
     template <typename V = T>
         requires(!std::is_void_v<T> && std::is_same_v<T, V>)

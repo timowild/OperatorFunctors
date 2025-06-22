@@ -5,17 +5,29 @@
 namespace operatorFunctors
 {
 
-template <typename T>
+template <typename T, uint32_t Position>
 class And;
 
-template <typename T>
-class Or : public BaseOperator<T, And<T>>
+template <typename T, uint32_t Position>
+class Or : public BaseOperator<T, Or<T, Position>, And<T, Position>>
 {
 private:
-    using Base = BaseOperator<T, And<T>>;
+    using Self = Or<T, Position>;
+    using OperatorNotT = And<T, Position>;
+    using Base = BaseOperator<T, Self, OperatorNotT>;
 
 public:
-    using Base::Base;
+    template <typename V = T>
+        requires(!std::is_void_v<T> && std::is_same_v<T, V>)
+    constexpr Or(const V& value) : Base{value}
+    {
+    }
+
+    constexpr Or()
+        requires(std::is_void_v<T>)
+        : Base{}
+    {
+    }
 
     template <typename V = T>
         requires(!std::is_void_v<T> && std::is_same_v<T, V>)
