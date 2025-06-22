@@ -7,7 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "") # works
 project(
     operatorFunctors
     VERSION 1.0.0
-    DESCRIPTION "Store multiple small ints into one bigger int"
+    DESCRIPTION "Improving the readability of simple (captureless) lambdas"
     LANGUAGES CXX
 )
 
