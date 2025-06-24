@@ -8,6 +8,9 @@
 namespace operatorFunctors
 {
 
+namespace details
+{
+
 template <typename T>
 class ValueStorage
 {
@@ -23,14 +26,16 @@ class ValueStorage<void>
 {
 };
 
+} // namespace details
+
 template <template <typename, uint32_t> class Derived, typename T, uint32_t Position, typename ExecutableOperatorFunc,
           template <typename, uint32_t> class OperatorNot>
-class BaseOperator : public ValueStorage<T>, public AndOrOperator<Derived<T, Position>>
+class BaseOperator : public details::ValueStorage<T>, public AndOrOperator<Derived<T, Position>>
 {
 private:
     using OperatorNotT = OperatorNot<T, Position>;
     using DerivedT = Derived<T, Position>;
-    using BaseValueStorage = ValueStorage<T>;
+    using BaseValueStorage = details::ValueStorage<T>;
     using BaseAndOrOperator = AndOrOperator<DerivedT>;
 
 protected:

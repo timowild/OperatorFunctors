@@ -4,6 +4,7 @@
 #include <operatorFunctors/helpers/get.hpp>
 
 #include <cstdint>
+#include <type_traits>
 #include <utility>
 
 namespace operatorFunctors
@@ -16,6 +17,7 @@ private:
     using Base = AndOrOperator<Derived>;
 
 protected:
+    // Only subclasses can create BaseUnion objects
     constexpr BaseUnion(const FunctorOrUnion1& functorOrUnion1, const FunctorOrUnion2& functorOrUnion2)
         : Base{}, m_functorOrUnionPair{functorOrUnion1, functorOrUnion2}
     {
@@ -51,5 +53,21 @@ protected:
 
     std::pair<FunctorOrUnion1, FunctorOrUnion2> m_functorOrUnionPair;
 };
+
+#define CreateOperatorFunctorUnionClass(Union, ExecutableOperatorFunc)                                                 \
+    template <typename FunctorOrUnion1, typename FunctorOrUnion2>                                                      \
+    class Union : public BaseUnion<Union<FunctorOrUnion1, FunctorOrUnion2>, FunctorOrUnion1, FunctorOrUnion2,          \
+                                   ExecutableOperatorFunc>                                                             \
+    {                                                                                                                  \
+    private:                                                                                                           \
+        using Self = Union<FunctorOrUnion1, FunctorOrUnion2>;                                                          \
+        using Base = BaseUnion<Self, FunctorOrUnion1, FunctorOrUnion2, ExecutableOperatorFunc>;                        \
+                                                                                                                       \
+    public:                                                                                                            \
+        constexpr Union(const FunctorOrUnion1& functorOrUnion1, const FunctorOrUnion2& functorOrUnion2)                \
+            : Base{functorOrUnion1, functorOrUnion2}                                                                   \
+        {                                                                                                              \
+        }                                                                                                              \
+    }
 
 } // namespace operatorFunctors
