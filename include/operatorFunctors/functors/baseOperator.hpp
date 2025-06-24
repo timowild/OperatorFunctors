@@ -47,8 +47,6 @@ protected:
     {
     }
 
-    friend DerivedT;
-
 public:
     constexpr OperatorNotT operator!() const
     {
