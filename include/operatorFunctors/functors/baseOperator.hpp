@@ -23,7 +23,7 @@ class ValueStorage<void>
 {
 };
 
-template <template <typename, uint32_t> class Derived, typename T, uint32_t Position,
+template <template <typename, uint32_t> class Derived, typename T, uint32_t Position, typename ExecutableOperatorFunc,
           template <typename, uint32_t> class OperatorNot>
 class BaseOperator : public ValueStorage<T>, public AndOrOperator<Derived<T, Position>>
 {
@@ -47,6 +47,8 @@ protected:
     {
     }
 
+    friend DerivedT;
+
 public:
     constexpr OperatorNotT operator!() const
     {
@@ -60,26 +62,23 @@ public:
         }
     }
 
-    template <typename V>
-        requires(!std::is_void_v<T>)
-    constexpr bool operator()(const V& v1, const V& v2) const
+    template <uint32_t Pos = 1, typename V = T>
+        requires(!std::is_void_v<T> && std::is_same_v<T, V> && Pos == Position)
+    constexpr bool operator()(const V& value) const
     {
-        return exec(v1, v2);
+        return ExecutableOperatorFunc{}(value, this->m_value);
     }
 
-protected:
-    template <typename... V>
-    constexpr bool exec(const V&... values) const
+    template <typename V>
+    constexpr bool operator()(const V& v1, const V& v2) const
     {
-        const DerivedT& derived = *static_cast<const DerivedT*>(this);
-
         if constexpr (!std::is_void_v<T>)
         {
-            return derived.template operator()<Position>(get<Position - 1>(values...));
+            return this->operator()<Position>(get<Position - 1>(v1, v2));
         }
         else
         {
-            return derived(values...);
+            return ExecutableOperatorFunc{}(v1, v2);
         }
     }
 };

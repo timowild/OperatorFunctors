@@ -9,7 +9,7 @@
 namespace operatorFunctors
 {
 
-template <typename FunctorOrUnion1, typename FunctorOrUnion2, typename Derived>
+template <typename Derived, typename FunctorOrUnion1, typename FunctorOrUnion2, typename ExecutableOperatorFunc>
 class BaseUnion : public AndOrOperator<Derived>
 {
 private:
@@ -21,6 +21,15 @@ protected:
     {
     }
 
+public:
+    template <typename... V>
+    constexpr bool operator()(const V&... values) const
+    {
+        return ExecutableOperatorFunc{}(exec(this->m_functorOrUnionPair.first, values...),
+                                        exec(this->m_functorOrUnionPair.second, values...));
+    }
+
+protected:
     template <typename Functor, typename... V>
     constexpr bool exec(const Functor& functor, const V&... values) const
     {

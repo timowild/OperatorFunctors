@@ -3,14 +3,19 @@
 namespace operatorFunctors
 {
 
+namespace details
+{
+static constexpr auto trueOperator = [](const auto&, const auto&) { return true; };
+}
+
 template <typename T, uint32_t Position>
 class False;
 
 template <typename T, uint32_t Position>
-class True : public BaseOperator<True, T, Position, False>
+class True : public BaseOperator<True, T, Position, decltype(details::trueOperator), False>
 {
 private:
-    using Base = BaseOperator<True, T, Position, False>;
+    using Base = BaseOperator<True, T, Position, decltype(details::trueOperator), False>;
 
 public:
     template <typename V = T>
@@ -21,15 +26,7 @@ public:
 
     constexpr True()
         requires(std::is_void_v<T>)
-        : Base{}
-    {
-    }
-
-    template <uint32_t Pos = 0, typename... V>
-    consteval bool operator()(const V&...) const
-    {
-        return true;
-    }
+    = default;
 };
 
 } // namespace operatorFunctors
