@@ -1,6 +1,5 @@
 #pragma once
 
-#include <operatorFunctors/functors/baseOperator.hpp>
 #include <operatorFunctors/helpers/isArg.hpp>
 
 #include <operatorFunctors/functors/equal.hpp>

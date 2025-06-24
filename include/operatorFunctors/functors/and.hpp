@@ -1,14 +1,14 @@
 #pragma once
 
 #include <operatorFunctors/functors/baseOperator.hpp>
+#include <operatorFunctors/helpers/forwardDeclaration.hpp>
 
 #include <functional>
 
 namespace operatorFunctors
 {
 
-template <typename T, uint32_t Position>
-class Or;
+ForwardOperatorFunctorClass(Or);
 
 CreateOperatorFunctorClass(And, std::logical_and<T>, Or);
 

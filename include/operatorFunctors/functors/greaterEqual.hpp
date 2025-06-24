@@ -1,14 +1,14 @@
 #pragma once
 
 #include <operatorFunctors/functors/baseOperator.hpp>
+#include <operatorFunctors/helpers/forwardDeclaration.hpp>
 
 #include <functional>
 
 namespace operatorFunctors
 {
 
-template <typename T, uint32_t Position>
-class Smaller;
+ForwardOperatorFunctorClass(Smaller);
 
 CreateOperatorFunctorClass(GreaterEqual, std::greater_equal<T>, Smaller);
 

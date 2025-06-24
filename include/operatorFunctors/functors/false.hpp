@@ -1,5 +1,8 @@
 #pragma once
 
+#include <operatorFunctors/functors/baseOperator.hpp>
+#include <operatorFunctors/helpers/forwardDeclaration.hpp>
+
 namespace operatorFunctors
 {
 
@@ -8,8 +11,7 @@ namespace details
 inline constexpr auto falseOperator = [](const auto&, const auto&) { return false; };
 }
 
-template <typename T, uint32_t Position>
-class True;
+ForwardOperatorFunctorClass(True);
 
 CreateOperatorFunctorClass(False, decltype(details::falseOperator), True);
 

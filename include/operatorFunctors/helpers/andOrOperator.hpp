@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <operatorFunctors/helpers/forwardDeclaration.hpp>
 #include <operatorFunctors/helpers/isFalse.hpp>
 #include <operatorFunctors/helpers/isTrue.hpp>
 
@@ -9,17 +10,11 @@
 namespace operatorFunctors
 {
 
-template <typename T, uint32_t Position>
-class False;
+ForwardOperatorFunctorClass(False);
+ForwardOperatorFunctorClass(True);
 
-template <typename T, uint32_t Position>
-class True;
-
-template <typename Functor1, typename Functor2>
-class AndUnion;
-
-template <typename Functor1, typename Functor2>
-class OrUnion;
+ForwardOperatorFunctorUnionClass(AndUnion);
+ForwardOperatorFunctorUnionClass(OrUnion);
 
 template <typename Derived>
 class AndOrOperator
@@ -28,14 +23,14 @@ protected:
     constexpr AndOrOperator() = default;
 
 public:
-    template <typename O, uint32_t Pos>
-    constexpr auto operator&&(const False<O, Pos>& other) const
+    template <typename T, uint32_t Pos>
+    constexpr auto operator&&(const False<T, Pos>& other) const
     {
         return other;
     }
 
-    template <typename O, uint32_t Pos>
-    constexpr auto operator&&(const True<O, Pos>&) const
+    template <typename T, uint32_t Pos>
+    constexpr auto operator&&(const True<T, Pos>&) const
     {
         return *static_cast<const Derived*>(this);
     }
@@ -53,14 +48,14 @@ public:
         }
     }
 
-    template <typename O, uint32_t Pos>
-    constexpr auto operator||(const True<O, Pos>& other) const
+    template <typename T, uint32_t Pos>
+    constexpr auto operator||(const True<T, Pos>& other) const
     {
         return other;
     }
 
-    template <typename O, uint32_t Pos>
-    constexpr auto operator||(const False<O, Pos>&) const
+    template <typename T, uint32_t Pos>
+    constexpr auto operator||(const False<T, Pos>&) const
     {
         return *static_cast<const Derived*>(this);
     }

@@ -1,13 +1,14 @@
 #pragma once
 
+#include <operatorFunctors/helpers/forwardDeclaration.hpp>
+
 #include <cstdint>
 #include <type_traits>
 
 namespace operatorFunctors
 {
 
-template <typename, uint32_t>
-class True;
+ForwardOperatorFunctorClass(True);
 
 template <typename T>
 struct IsTrue : std::false_type
