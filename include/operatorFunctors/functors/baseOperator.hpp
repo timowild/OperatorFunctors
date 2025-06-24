@@ -81,4 +81,23 @@ public:
     }
 };
 
+#define CreateOperatorFunctorClass(Operator, ExecutableOperatorFunc, OperatorNot)                                      \
+    template <typename T, uint32_t Position>                                                                           \
+    class Operator : public BaseOperator<Operator, T, Position, ExecutableOperatorFunc, OperatorNot>                   \
+    {                                                                                                                  \
+    private:                                                                                                           \
+        using Base = BaseOperator<Operator, T, Position, ExecutableOperatorFunc, OperatorNot>;                         \
+                                                                                                                       \
+    public:                                                                                                            \
+        template <typename V = T>                                                                                      \
+            requires(!std::is_void_v<T> && std::is_same_v<T, V>)                                                       \
+        constexpr Operator(const V& value) : Base{value}                                                               \
+        {                                                                                                              \
+        }                                                                                                              \
+                                                                                                                       \
+        constexpr Operator()                                                                                           \
+            requires(std::is_void_v<T>)                                                                                \
+        = default;                                                                                                     \
+    }
+
 } // namespace operatorFunctors
