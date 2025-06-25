@@ -43,7 +43,7 @@ public:
     {
         if constexpr (details::IsFalse_v<Derived>)
         {
-            *static_cast<const Derived*>(this);
+            return *static_cast<const Derived*>(this);
         }
         else
         {
@@ -68,7 +68,7 @@ public:
     {
         if constexpr (details::IsTrue_v<Derived>)
         {
-            *static_cast<const Derived*>(this);
+            return *static_cast<const Derived*>(this);
         }
         else
         {

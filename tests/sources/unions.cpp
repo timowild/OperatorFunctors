@@ -36,8 +36,8 @@ TEST(AndUnion, OneOrMultipleOperatorFunctorArg)
         const auto getExpectedValueOperatorFuncC = [&]<uint32_t UseArgN1, uint32_t UseArgN2>()
         {
             // clang-format off
-            return [&](const auto&... values) { return details::get<UseArgN1 - 1>(values...) >= details::get<UseArgN2 - 1>(values...) && 
-                                                       details::get<UseArgN1 - 1>(values...) >= Value &&
+            return [&](const auto&... values) { return details::get<UseArgN1 - 1>(values...) > details::get<UseArgN2 - 1>(values...) && 
+                                                       details::get<UseArgN1 - 1>(values...) > Value &&
                                                        details::get<UseArgN2 - 1>(values...) <= Value; };
             // clang-format on
         };
@@ -72,18 +72,18 @@ TEST(AndUnion, OneOrMultipleOperatorFunctorArg)
                         !!((argN1 > argN2) && (argN1 > Value) && (argN2 <= Value)), expectedValueFuncC);
                     helper::checkFunc<USE_ARG_N_MAX, MaxArgs, Value>(
                         !((argN1 <= argN2) || ((argN1 <= Value) || (argN2 > Value))), expectedValueFuncC);
-
-                    (f2.template operator()<UseArgNIds>(), ...);
                 };
 
-                (f.template operator()<UseArgNIds>(), ...);
-            }(helper::details::integer_sequence_from_to<uint32_t, 1, MaxUseArgN + 1>{});
+                (f2.template operator()<UseArgNIds>(), ...);
+            };
 
-            if constexpr (sizeof...(VRest) > 0)
-            {
-                execFunc.template operator()<VRest...>(execFunc);
-            }
-        };
+            (f.template operator()<UseArgNIds>(), ...);
+        }(helper::details::integer_sequence_from_to<uint32_t, 1, MaxUseArgN + 1>{});
+
+        if constexpr (sizeof...(VRest) > 0)
+        {
+            execFunc.template operator()<VRest...>(execFunc);
+        }
     };
 
     func.template operator()<-1, 0, 1>(func);
@@ -150,18 +150,18 @@ TEST(OrUnion, OneOrMultipleOperatorFunctorArg)
                         !!((argN1 > argN2) || (argN1 > Value) || (argN2 <= Value)), expectedValueFuncC);
                     helper::checkFunc<USE_ARG_N_MAX, MaxArgs, Value>(
                         !((argN1 <= argN2) && (argN1 <= Value) && (argN2 > Value)), expectedValueFuncC);
-
-                    (f2.template operator()<UseArgNIds>(), ...);
                 };
 
-                (f.template operator()<UseArgNIds>(), ...);
-            }(helper::details::integer_sequence_from_to<uint32_t, 1, MaxUseArgN + 1>{});
+                (f2.template operator()<UseArgNIds>(), ...);
+            };
 
-            if constexpr (sizeof...(VRest) > 0)
-            {
-                execFunc.template operator()<VRest...>(execFunc);
-            }
-        };
+            (f.template operator()<UseArgNIds>(), ...);
+        }(helper::details::integer_sequence_from_to<uint32_t, 1, MaxUseArgN + 1>{});
+
+        if constexpr (sizeof...(VRest) > 0)
+        {
+            execFunc.template operator()<VRest...>(execFunc);
+        }
     };
 
     func.template operator()<-1, 0, 1>(func);

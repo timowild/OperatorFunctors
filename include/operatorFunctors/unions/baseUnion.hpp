@@ -45,21 +45,6 @@ protected:
         return unionFunctor(values...);
     }
 
-    template <template <typename, uint32_t, uint32_t> class Functor, typename T, uint32_t PosArg1, uint32_t PosArg2,
-              typename... V>
-        requires(PosArg1 <= sizeof...(V) && PosArg2 <= sizeof...(V) && sizeof...(V) >= 1)
-    constexpr bool exec(const Functor<T, PosArg1, PosArg2>& functor, const V&... values) const
-    {
-        if constexpr (!std::is_void_v<T>)
-        {
-            return functor.template operator()<PosArg1>(details::get<PosArg1 - 1>(values...));
-        }
-        else
-        {
-            return functor(details::get<PosArg1 - 1>(values...), details::get<PosArg2 - 1>(values...));
-        }
-    }
-
     std::pair<FunctorOrUnion1, FunctorOrUnion2> m_functorOrUnionPair;
 };
 
