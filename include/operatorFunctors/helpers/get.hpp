@@ -5,6 +5,9 @@
 namespace operatorFunctors
 {
 
+namespace details
+{
+
 template <uint32_t Pos, typename V1, typename... VRest>
     requires(Pos <= sizeof...(VRest))
 constexpr auto get(const V1& v1, const VRest&... vRest)
@@ -18,5 +21,7 @@ constexpr auto get(const V1& v1, const VRest&... vRest)
         return get<Pos - 1>(vRest...);
     }
 }
+
+} // namespace details
 
 } // namespace operatorFunctors

@@ -6,7 +6,7 @@ namespace operatorFunctors
 {
 
 #define ForwardOperatorFunctorClass(Operator)                                                                          \
-    template <typename /*T*/, uint32_t /*Position*/>                                                                   \
+    template <typename /*T*/, uint32_t /*PosArg1*/, uint32_t /*PosArg2*/>                                              \
     class Operator
 
 #define ForwardOperatorFunctorUnionClass(Union)                                                                        \

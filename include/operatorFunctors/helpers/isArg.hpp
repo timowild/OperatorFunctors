@@ -6,8 +6,11 @@
 namespace operatorFunctors
 {
 
-template <uint32_t>
+template <uint32_t /*Pos*/>
 class Arg;
+
+namespace details
+{
 
 template <typename T>
 struct IsArg : std::false_type
@@ -19,5 +22,7 @@ struct IsArg<Arg<Pos>> : std::true_type
 {
     static constexpr uint32_t pos = Pos;
 };
+
+} // namespace details
 
 } // namespace operatorFunctors

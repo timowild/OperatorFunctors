@@ -1,31 +1,39 @@
 #include <gtest/gtest.h>
 
+#include <operatorFunctors/helpers/get.hpp>
 #include <operatorFunctors/operatorFunctors.hpp>
 
-TEST(True, True)
+#include "helper.hpp"
+
+#include <algorithm>
+
+static constexpr uint32_t MaxUseArgN = 3;
+static constexpr uint32_t MaxArgs = 4;
+static_assert(MaxArgs >= MaxUseArgN);
+
+TEST(True, TwoOperatorFunctorArg)
 {
     using namespace operatorFunctors;
 
+    [&]<uint32_t... UseArgNIds>(std::integer_sequence<uint32_t, UseArgNIds...>)
     {
-        const auto check = [](auto andFunc)
+        const auto f = [&]<uint32_t UseArgN>()
         {
-            EXPECT_TRUE(andFunc(false, false));
-            EXPECT_TRUE(andFunc(true, true));
+            const auto expectedValueFunc = [](const auto&...) { return true; };
+
+            helper::checkFunc<UseArgN, MaxArgs>(argN<UseArgN> == argN<UseArgN>, expectedValueFunc);
+            helper::checkFunc<UseArgN, MaxArgs>(!!(argN<UseArgN> == argN<UseArgN>), expectedValueFunc);
+            helper::checkFunc<UseArgN, MaxArgs>((argN<UseArgN> >= argN<UseArgN>), expectedValueFunc);
+            helper::checkFunc<UseArgN, MaxArgs>(!!(argN<UseArgN> >= argN<UseArgN>), expectedValueFunc);
+            helper::checkFunc<UseArgN, MaxArgs>((argN<UseArgN> <= argN<UseArgN>), expectedValueFunc);
+            helper::checkFunc<UseArgN, MaxArgs>(!!(argN<UseArgN> <= argN<UseArgN>), expectedValueFunc);
+
+            helper::checkFunc<UseArgN, MaxArgs>(argN<UseArgN> != argN<UseArgN> || argN<UseArgN> == argN<UseArgN>,
+                                                expectedValueFunc);
+            helper::checkFunc<UseArgN, MaxArgs>(argN<UseArgN> == argN<UseArgN> || argN<UseArgN> != argN<UseArgN>,
+                                                expectedValueFunc);
         };
 
-        check(arg1 == arg1);
-        check(!!(arg1 == arg1));
-        check(arg2 == arg2);
-        check(!!(arg2 == arg2));
-
-        check(arg1 >= arg1);
-        check(arg1 <= arg1);
-        check(arg2 >= arg2);
-        check(arg2 <= arg2);
-
-        check(arg1 != arg1 || arg1 == arg1);
-        check(arg1 == arg1 || arg1 != arg1);
-        check(arg2 != arg2 || arg2 == arg2);
-        check(arg2 == arg2 || arg2 != arg2);
-    }
+        (f.template operator()<UseArgNIds>(), ...);
+    }(helper::details::integer_sequence_from_to<uint32_t, 1, MaxUseArgN + 1>{});
 }
