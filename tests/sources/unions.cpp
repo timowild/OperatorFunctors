@@ -50,11 +50,11 @@ TEST(AndUnion, OneOrMultipleOperatorFunctorArg)
                 {
                     static constexpr uint32_t USE_ARG_N_MAX = std::max(UseArgN1, UseArgN2);
 
-                    constexpr auto expectedValueFuncA =
+                    const auto expectedValueFuncA =
                         getExpectedValueOperatorFuncA.template operator()<UseArgN1, UseArgN2>();
-                    constexpr auto expectedValueFuncB =
+                    const auto expectedValueFuncB =
                         getExpectedValueOperatorFuncB.template operator()<UseArgN1, UseArgN2>();
-                    constexpr auto expectedValueFuncC =
+                    const auto expectedValueFuncC =
                         getExpectedValueOperatorFuncC.template operator()<UseArgN1, UseArgN2>();
 
                     constexpr auto argN1 = argN<UseArgN1>;
@@ -128,11 +128,11 @@ TEST(OrUnion, OneOrMultipleOperatorFunctorArg)
                 {
                     static constexpr uint32_t USE_ARG_N_MAX = std::max(UseArgN1, UseArgN2);
 
-                    constexpr auto expectedValueFuncA =
+                    const auto expectedValueFuncA =
                         getExpectedValueOperatorFuncA.template operator()<UseArgN1, UseArgN2>();
-                    constexpr auto expectedValueFuncB =
+                    const auto expectedValueFuncB =
                         getExpectedValueOperatorFuncB.template operator()<UseArgN1, UseArgN2>();
-                    constexpr auto expectedValueFuncC =
+                    const auto expectedValueFuncC =
                         getExpectedValueOperatorFuncC.template operator()<UseArgN1, UseArgN2>();
 
                     constexpr auto argN1 = argN<UseArgN1>;

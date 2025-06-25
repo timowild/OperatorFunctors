@@ -29,8 +29,8 @@ public:
     template <typename... V>
     constexpr bool operator()(const V&... values) const
     {
-        return ExecutableOperatorFunc{}(exec(this->m_functorOrUnionPair.first, values...),
-                                        exec(this->m_functorOrUnionPair.second, values...));
+        return ExecutableOperatorFunc{}(this->m_functorOrUnionPair.first(values...),
+                                        this->m_functorOrUnionPair.second(values...));
     }
 
     constexpr auto operator!() const
@@ -39,12 +39,6 @@ public:
     }
 
 protected:
-    template <typename UnionFunctor, typename... V>
-    constexpr bool exec(const UnionFunctor& unionFunctor, const V&... values) const
-    {
-        return unionFunctor(values...);
-    }
-
     std::pair<FunctorOrUnion1, FunctorOrUnion2> m_functorOrUnionPair;
 };
 
