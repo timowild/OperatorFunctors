@@ -94,8 +94,7 @@ public:
             const auto& v1 = details::get<PosArg1 - 1>(values...);
             const auto& v2 = details::get<PosArg2 - 1>(values...);
 
-            static_assert(PosArg2 > details::INVALID_POS &&
-                          std::is_invocable_r_v<bool, ExecutableOperatorFunc, decltype(v1), decltype(v2)>);
+            static_assert(std::is_invocable_r_v<bool, ExecutableOperatorFunc, decltype(v1), decltype(v2)>);
 
             return ExecutableOperatorFunc{}(v1, v2);
         }
