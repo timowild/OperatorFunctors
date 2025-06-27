@@ -30,133 +30,135 @@ private:
     static_assert(Pos >= 1, "Pos needs to be >= 1");
 
 public:
+    static constexpr uint32_t POS = Pos;
+
     constexpr Arg() = default;
 
     template <typename T>
     constexpr auto operator<(T value) const
     {
-        if constexpr (!details::IsArg<T>::value)
+        if constexpr (!details::IsArg_v<T>)
         {
             return Smaller<T, Pos>{value};
         }
-        else if constexpr (Pos != details::IsArg<T>::pos)
+        else if constexpr (Pos != T::POS)
         {
-            return Smaller<void, Pos, details::IsArg<T>::pos>{};
+            return Smaller<void, Pos, T::POS>{};
         }
         else
         {
-            return False<void, Pos, details::IsArg<T>::pos>{};
+            return False<void, Pos, T::POS>{};
         }
     }
 
     template <typename T>
     constexpr auto operator<=(const T& value) const
     {
-        if constexpr (!details::IsArg<T>::value)
+        if constexpr (!details::IsArg_v<T>)
         {
             return SmallerEqual<T, Pos>{value};
         }
-        else if constexpr (Pos != details::IsArg<T>::pos)
+        else if constexpr (Pos != T::POS)
         {
-            return SmallerEqual<void, Pos, details::IsArg<T>::pos>{};
+            return SmallerEqual<void, Pos, T::POS>{};
         }
         else
         {
-            return True<void, Pos, details::IsArg<T>::pos>{};
+            return True<void, Pos, T::POS>{};
         }
     }
 
     template <typename T>
     constexpr auto operator>(const T& value) const
     {
-        if constexpr (!details::IsArg<T>::value)
+        if constexpr (!details::IsArg_v<T>)
         {
             return Greater<T, Pos>{value};
         }
-        else if constexpr (Pos != details::IsArg<T>::pos)
+        else if constexpr (Pos != T::POS)
         {
-            return Greater<void, Pos, details::IsArg<T>::pos>{};
+            return Greater<void, Pos, T::POS>{};
         }
         else
         {
-            return False<void, Pos, details::IsArg<T>::pos>{};
+            return False<void, Pos, T::POS>{};
         }
     }
 
     template <typename T>
     constexpr auto operator>=(const T& value) const
     {
-        if constexpr (!details::IsArg<T>::value)
+        if constexpr (!details::IsArg_v<T>)
         {
             return GreaterEqual<T, Pos>{value};
         }
-        else if constexpr (Pos != details::IsArg<T>::pos)
+        else if constexpr (Pos != T::POS)
         {
-            return GreaterEqual<void, Pos, details::IsArg<T>::pos>{};
+            return GreaterEqual<void, Pos, T::POS>{};
         }
         else
         {
-            return True<void, Pos, details::IsArg<T>::pos>{};
+            return True<void, Pos, T::POS>{};
         }
     }
 
     template <typename T>
     constexpr auto operator==(const T& value) const
     {
-        if constexpr (!details::IsArg<T>::value)
+        if constexpr (!details::IsArg_v<T>)
         {
             return Equal<T, Pos>{value};
         }
-        else if constexpr (Pos != details::IsArg<T>::pos)
+        else if constexpr (Pos != T::POS)
         {
-            return Equal<void, Pos, details::IsArg<T>::pos>{};
+            return Equal<void, Pos, T::POS>{};
         }
         else
         {
-            return True<void, Pos, details::IsArg<T>::pos>{};
+            return True<void, Pos, T::POS>{};
         }
     }
 
     template <typename T>
     constexpr auto operator!=(const T& value) const
     {
-        if constexpr (!details::IsArg<T>::value)
+        if constexpr (!details::IsArg_v<T>)
         {
             return NotEqual<T, Pos>{value};
         }
-        else if constexpr (Pos != details::IsArg<T>::pos)
+        else if constexpr (Pos != T::POS)
         {
-            return NotEqual<void, Pos, details::IsArg<T>::pos>{};
+            return NotEqual<void, Pos, T::POS>{};
         }
         else
         {
-            return False<void, Pos, details::IsArg<T>::pos>{};
+            return False<void, Pos, T::POS>{};
         }
     }
 
     template <typename T>
     constexpr auto operator&&(const T& value) const
     {
-        if constexpr (!details::IsArg<T>::value)
+        if constexpr (!details::IsArg_v<T>)
         {
             return And<T, Pos>{value};
         }
         else
         {
-            return And<void, Pos, details::IsArg<T>::pos>{};
+            return And<void, Pos, T::POS>{};
         }
     }
 
     template <typename T>
     constexpr auto operator||(const T& value) const
     {
-        if constexpr (!details::IsArg<T>::value)
+        if constexpr (!details::IsArg_v<T>)
         {
             return Or<T, Pos>{value};
         }
         else
         {
-            return Or<void, Pos, details::IsArg<T>::pos>{};
+            return Or<void, Pos, T::POS>{};
         }
     }
 };
