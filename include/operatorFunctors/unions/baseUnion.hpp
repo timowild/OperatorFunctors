@@ -12,12 +12,13 @@ namespace operatorFunctors
 
 template <template <typename...> class Derived, typename ExecutableOperatorFunc,
           template <typename...> class OperatorNotT, typename... FunctorsOrUnions>
-    requires(sizeof...(FunctorsOrUnions) >= 2 && std::is_invocable_r_v<bool, ExecutableOperatorFunc, bool, bool>)
 class BaseUnion : public details::AndOrOperator<Derived<FunctorsOrUnions...>>
 {
 private:
     using DerivedT = Derived<FunctorsOrUnions...>;
     using Base = details::AndOrOperator<DerivedT>;
+
+    static_assert(sizeof...(FunctorsOrUnions) >= 2 && std::is_invocable_r_v<bool, ExecutableOperatorFunc, bool, bool>);
 
 protected:
     // Only subclasses can create BaseUnion objects
