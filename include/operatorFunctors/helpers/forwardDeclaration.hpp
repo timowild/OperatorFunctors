@@ -10,7 +10,7 @@ namespace operatorFunctors
     class Operator
 
 #define ForwardOperatorFunctorUnionClass(Union)                                                                        \
-    template <typename /*FunctorOrUnion1*/, typename /*FunctorOrUnion2*/>                                              \
+    template <typename... /*FunctorsOrUnions*/>                                                                        \
     class Union
 
 } // namespace operatorFunctors
