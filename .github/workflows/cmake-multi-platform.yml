@@ -30,12 +30,15 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
+            cpp_flags: "/bigobj"
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
+            cpp_flags: ""
           - os: ubuntu-latest
             c_compiler: clang
             cpp_compiler: clang++
+            cpp_flags: ""
         exclude:
           - os: windows-latest
             c_compiler: gcc
@@ -54,8 +57,7 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - if : matrix.cpp_compiler != 'cl'
-      name: Configure CMake
+    - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
@@ -63,18 +65,7 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
-
-    - if : matrix.cpp_compiler == 'cl'
-      name: Configure CMake for msvc
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -DCMAKE_CXX_FLAGS="/bigobj"
+        -DCMAKE_CXX_FLAGS=${{ matrix.cpp_flags }}
         -S ${{ github.workspace }}
 
     - name: Build

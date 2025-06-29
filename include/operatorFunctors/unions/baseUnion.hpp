@@ -36,7 +36,7 @@ public:
     constexpr auto operator!() const
     {
         return [this]<uint32_t... Idx>(std::integer_sequence<uint32_t, Idx...>) {
-            return OperatorNotT{!std::get<Idx>(this->m_functorsOrUnions)...};
+            return OperatorNotT{!std::get<Idx>(m_functorsOrUnions)...};
         }(std::make_integer_sequence<uint32_t, sizeof...(FunctorsOrUnions)>{});
     }
 
@@ -78,11 +78,11 @@ private:
     {
         constexpr uint32_t Idx = sizeof...(FunctorsOrUnions) - I - 1;
 
-        const auto& r1 = std::get<Idx>(this->m_functorsOrUnions)(values...);
+        const auto& r1 = std::get<Idx>(m_functorsOrUnions)(values...);
 
         if constexpr (Idx == 1)
         {
-            return ExecutableOperatorFunc{}(std::get<0>(this->m_functorsOrUnions)(values...), r1);
+            return ExecutableOperatorFunc{}(std::get<0>(m_functorsOrUnions)(values...), r1);
         }
         else
         {
@@ -102,7 +102,9 @@ protected:
         using Self = Union<FunctorsOrUnions...>;                                                                       \
         using Base = BaseUnion<Union, ExecutableOperatorFunc, OperatorNot, FunctorsOrUnions...>;                       \
                                                                                                                        \
-        template <template <typename...> class, typename, template <typename...> class, typename...>                   \
+        /* Get access to newUnion's m_functorsOrUnions member in the append method */                                  \
+        template <template <typename...> class /*Derived*/, typename /*ExecutableOperatorFunc*/,                       \
+                  template <typename...> class /*OperatorNotT*/, typename... /*FunctorsOrUnions*/>                     \
         friend class BaseUnion;                                                                                        \
                                                                                                                        \
     public:                                                                                                            \
