@@ -87,9 +87,9 @@ public:
         {
             return self;
         }
-        else if constexpr (!details::IsOrUnion_v<Derived> && !details::IsAndUnion_v<Derived>)
+        else if constexpr (!details::IsOrUnion_v<Derived>)
         {
-            if constexpr (details::IsOrUnion_v<OtherFunctorOrUnion>)
+            if constexpr (details::IsOrUnion_v<OtherFunctorOrUnion> && !details::IsAndUnion_v<Derived>)
             {
                 return other.append(self);
             }
