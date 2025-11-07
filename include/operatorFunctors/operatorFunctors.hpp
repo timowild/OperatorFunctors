@@ -35,7 +35,7 @@ public:
     constexpr Arg() = default;
 
     template <typename T>
-    constexpr auto operator<(T value) const
+    constexpr auto operator<(const T& value) const
     {
         if constexpr (!details::IsArg_v<T>)
         {
