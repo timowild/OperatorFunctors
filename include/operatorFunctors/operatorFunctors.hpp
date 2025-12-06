@@ -166,6 +166,6 @@ public:
 template <uint32_t Position>
 inline constexpr Arg<Position> argN{};
 
-inline constexpr Arg<1> arg, arg1{};
+inline constexpr Arg<1> arg{}, arg1{};
 inline constexpr Arg<2> arg2{};
 } // namespace operatorFunctors
